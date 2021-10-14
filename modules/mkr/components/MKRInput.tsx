@@ -51,7 +51,7 @@ export function MKRInput({
   const onClickSetMax = () => {
     const val = balance ? balance : new BigNumber(0);
     onChange(val);
-    setCurrentValueStr(val.toString());
+    setCurrentValueStr(val.toFormat(6));
   };
 
   const errorMax = value !== undefined && value.isGreaterThan(balance || new BigNumber(0));
