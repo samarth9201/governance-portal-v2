@@ -10,5 +10,7 @@ describe('Navigation', () => {
 
     // Find the title
     cy.get('h1').contains('Maker Governance');
+
+    cy.get('')
   });
 });

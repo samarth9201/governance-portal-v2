@@ -16,6 +16,10 @@ Given('{string} visible', async (testId: string) => {
     cy.get(testId).should('be.visible');
 });
 
+Given('{string} text visible', async (testId: string) => {
+    cy.get(testId).should('be.visible');
+});
+
 Given('{string} is disabled', async (testId: string) => {
     cy.get(testId).should('be.disabled');
 });
