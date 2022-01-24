@@ -105,7 +105,7 @@ const Header = (): JSX.Element => {
         {chainId && <Flex>{chainIdToNetworkName(chainId)}</Flex>}
 
         {bpi > 1 && account && router.pathname.includes('polling') && <BallotStatus mr={3} />}
-        {typeof window !== 'undefined' && <AccountSelect />}
+        {/* {typeof window !== 'undefined' && <AccountSelect />} */}
 
         <IconButton
           aria-label="Show menu"

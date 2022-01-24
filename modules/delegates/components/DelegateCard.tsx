@@ -28,27 +28,31 @@ type PropTypes = {
 };
 
 export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
+  console.log('render');
   const [showDelegateModal, setShowDelegateModal] = useState(false);
   const [showUndelegateModal, setShowUndelegateModal] = useState(false);
-  const { account, voteDelegateContractAddress } = useAccount();
+  // const { account, voteDelegateContractAddress } = useAccount();
 
-  const { data: totalStaked, mutate: mutateTotalStaked } = useLockedMkr(delegate.voteDelegateAddress);
-  const { data: mkrStaked, mutate: mutateMkrStaked } = useMkrDelegated(account, delegate.voteDelegateAddress);
+  // const { data: totalStaked, mutate: mutateTotalStaked } = useLockedMkr(delegate.voteDelegateAddress);
+  // const { data: mkrStaked, mutate: mutateMkrStaked } = useMkrDelegated(address, delegate.voteDelegateAddress);
 
   const { trackButtonClick } = useAnalytics(ANALYTICS_PAGES.DELEGATES);
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
+  const chainId = 1;
 
-  const { data: lastVoteData } = useSWR<{ lastVote: PollVoteHistory }>(
-    `/api/address/${delegate.voteDelegateAddress}/last-vote?network=${chainIdToNetworkName(chainId)}`,
-    fetchJson,
-    {
-      revalidateOnFocus: false,
-      refreshInterval: 0,
-      revalidateOnMount: true
-    }
-  );
+  // const { data: lastVoteData } = useSWR<{ lastVote: PollVoteHistory }>(
+  //   `/api/address/${delegate.voteDelegateAddress}/last-vote?network=${chainIdToNetworkName(chainId)}`,
+  //   fetchJson,
+  //   {
+  //     revalidateOnFocus: false,
+  //     refreshInterval: 0,
+  //     revalidateOnMount: true
+  //   }
+  // );
 
-  const isOwner = delegate.voteDelegateAddress.toLowerCase() === voteDelegateContractAddress?.toLowerCase();
+  // const isOwner = delegate.voteDelegateAddress.toLowerCase() === voteDelegateContractAddress?.toLowerCase();
+
+  const isOwner = false;
 
   return (
     <Card
@@ -59,12 +63,12 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
       data-testid="delegate-card"
     >
       <Box px={[3, 4]} pb={[3, 4]} pt={3}>
-        <Box mb={2}>
+        {/* <Box mb={2}>
           {lastVoteData && (
             <LastVoted expired={delegate.expired} date={lastVoteData.lastVote?.blockTimestamp} left />
           )}
           {!lastVoteData && <SkeletonThemed width={'200px'} height={'15px'} />}
-        </Box>
+        </Box> */}
         <Flex
           sx={{
             flexDirection: ['column', 'column', 'row', 'column', 'row']
@@ -163,7 +167,7 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
                   </Text>
                 </Tooltip>
               </Box>
-              <Box>
+              {/* <Box>
                 <Button
                   variant="primaryOutline"
                   disabled={!account}
@@ -176,7 +180,7 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
                 >
                   Undelegate
                 </Button>
-              </Box>
+              </Box> */}
             </Flex>
             <Flex
               sx={{
@@ -193,7 +197,7 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
                   sx={{ fontSize: [3, 5] }}
                   data-testid="total-mkr-delegated"
                 >
-                  {totalStaked ? totalStaked.toBigNumber().toFormat(3) : '0.000'}
+                  {/* {totalStaked ? totalStaked.toBigNumber().toFormat(3) : '0.000'} */}
                 </Text>
                 <Text as="p" variant="secondary" color="onSecondary" sx={{ fontSize: [2, 3] }}>
                   Total MKR delegated
@@ -206,14 +210,14 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
                   sx={{ fontSize: [3, 5] }}
                   data-testid="mkr-delegated-by-you"
                 >
-                  {mkrStaked ? mkrStaked.toBigNumber().toFormat(3) : '0.000'}
+                  {/* {mkrStaked ? mkrStaked.toBigNumber().toFormat(3) : '0.000'} */}
                 </Text>
                 <Text as="p" variant="secondary" color="onSecondary" sx={{ fontSize: [2, 3] }}>
                   MKR delegated by you
                 </Text>
               </Box>
               <Box>
-                <Button
+                {/* <Button
                   variant="primaryLarge"
                   data-testid="button-delegate"
                   disabled={!account}
@@ -224,7 +228,7 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
                   sx={{ width: ['100%', '150px'], maxWidth: '150px', height: '45px', mt: [4, 4, 0, 4, 0] }}
                 >
                   Delegate
-                </Button>
+                </Button> */}
               </Box>
             </Flex>
           </Flex>
@@ -236,15 +240,19 @@ export function DelegateCard({ delegate }: PropTypes): React.ReactElement {
         delegate={delegate}
         isOpen={showDelegateModal}
         onDismiss={() => setShowDelegateModal(false)}
-        mutateTotalStaked={mutateTotalStaked}
-        mutateMkrStaked={mutateMkrStaked}
+        // mutateTotalStaked={mutateTotalStaked}
+        // mutateMkrStaked={mutateMkrStaked}
+        mutateTotalStaked={() => null}
+        mutateMkrStaked={() => null}
       />
       <UndelegateModal
         delegate={delegate}
         isOpen={showUndelegateModal}
         onDismiss={() => setShowUndelegateModal(false)}
-        mutateTotalStaked={mutateTotalStaked}
-        mutateMkrStaked={mutateMkrStaked}
+        // mutateTotalStaked={mutateTotalStaked}
+        // mutateMkrStaked={mutateMkrStaked}
+        mutateTotalStaked={() => null}
+        mutateMkrStaked={() => null}
       />
     </Card>
   );

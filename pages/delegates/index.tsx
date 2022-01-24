@@ -127,7 +127,7 @@ const Delegates = ({ delegates, stats }: Props) => {
             </Box>
           )}
 
-          {shadowDelegates.length > 0 && (
+          {/* {shadowDelegates.length > 0 && (
             <Box sx={styles.delegateGroup}>
               <Heading mb={3} mt={3} as="h4">
                 Shadow Delegates
@@ -141,9 +141,9 @@ const Delegates = ({ delegates, stats }: Props) => {
                 ))}
               </Box>
             </Box>
-          )}
+          )} */}
 
-          {expiredDelegates.length > 0 && (
+          {/* {expiredDelegates.length > 0 && (
             <Box sx={styles.delegateGroup}>
               <Heading mb={3} mt={3} as="h4">
                 Expired Delegates
@@ -157,7 +157,7 @@ const Delegates = ({ delegates, stats }: Props) => {
                 ))}
               </Box>
             </Box>
-          )}
+          )} */}
         </Box>
         <Stack gap={3}>
           <Box>
@@ -184,7 +184,7 @@ const Delegates = ({ delegates, stats }: Props) => {
               </Box>
             </Card>
           </Box>
-          {stats && <DelegatesSystemInfo stats={stats} />}
+          {/* {stats && <DelegatesSystemInfo stats={stats} />} */}
           <ResourceBox type={'delegates'} />
           <ResourceBox type={'general'} />
         </Stack>
@@ -197,7 +197,8 @@ export default function DelegatesPage({ delegates, stats }: Props): JSX.Element 
   const [_delegates, _setDelegates] = useState<Delegate[]>();
   const [_stats, _setStats] = useState<DelegatesAPIStats>();
   const [error, setError] = useState<string>();
-  const { chainId } = useActiveWeb3React();
+  // const { chainId } = useActiveWeb3React();
+  const chainId = 1;
 
   // fetch delegates at run-time if on any network other than the default
   useEffect(() => {
@@ -235,14 +236,14 @@ export default function DelegatesPage({ delegates, stats }: Props): JSX.Element 
 export const getStaticProps: GetStaticProps = async () => {
   const delegatesAPIResponse = await fetchDelegates();
 
-  console.log({ delegatesAPIResponse: delegatesAPIResponse.delegates });
-
   return {
     revalidate: 30, // allow revalidation every 30 seconds
     props: {
       // Shuffle in the backend, this will be changed depending on the sorting order.
       delegates: shuffleArray(delegatesAPIResponse.delegates),
-      stats: delegatesAPIResponse.stats
+      // stats: delegatesAPIResponse.stats,
+      // delegates: [],
+      stats: {}
     }
   };
 };
