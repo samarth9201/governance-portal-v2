@@ -1,30 +1,27 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { useBreakpointIndex } from '@theme-ui/match-media';
 import { Box, Flex, Text, Button, Close, ThemeUICSSObject, Link as ExternalLink } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import Link from 'next/link';
-
 import { WalletConnectConnector } from '@web3-react/walletconnect-connector';
 import { UnsupportedChainIdError } from '@web3-react/core';
+import { AbstractConnector } from '@web3-react/abstract-connector';
 
 import { formatAddress } from 'lib/utils';
-import useTransactionStore from 'modules/web3/stores/transactions';
 import { fadeIn, slideUp } from 'lib/keyframes';
-import AccountBox from './AccountBox';
-import TransactionBox from './TransactionBox';
-import VotingWeight from './VotingWeight';
-import NetworkAlertModal from './NetworkAlertModal';
-import { AbstractConnector } from '@web3-react/abstract-connector';
+import useTransactionStore from 'modules/web3/stores/transactions';
+import AccountBox from 'modules/app/components/layout/header/AccountBox';
+import TransactionBox from 'modules/app/components/layout/header//TransactionBox';
+import VotingWeight from 'modules/app/components/layout/header//VotingWeight';
+import NetworkAlertModal from 'modules/app/components/layout/header//NetworkAlertModal';
 import ConnectWalletButton from 'modules/web3/components/ConnectWalletButton';
 import { useEagerConnect } from 'modules/web3/hooks/useEagerConnect';
-import { useContext } from 'react';
 import { AnalyticsContext } from 'modules/app/client/analytics/AnalyticsContext';
 import Tooltip from 'modules/app/components/Tooltip';
 import { ConnectorName } from 'modules/web3/types/connectors';
 import { SUPPORTED_WALLETS } from 'modules/web3/constants/wallets';
 import { useWindowBindings } from 'modules/web3/hooks/useWindowBindings';
-import { useWeb3React } from '@web3-react/core';
 import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
 
 export type ChainIdError = null | 'network mismatch' | 'unsupported network';
@@ -107,7 +104,7 @@ const AccountSelect = (): React.ReactElement => {
   const bpi = useBreakpointIndex();
 
   const addHwAccount = async address => {
-    console.log('add hw account');
+    // console.log('add hw account');
     //   const accounts = maker.listAccounts();
     //   if (accounts.some(a => a.address.toLowerCase() === address.toLowerCase())) {
     //     maker.useAccountWithAddress(address);
@@ -128,12 +125,12 @@ const AccountSelect = (): React.ReactElement => {
   };
 
   const LedgerButton = () => {
-    const { setUserData } = useContext(AnalyticsContext);
+    // const { setUserData } = useContext(AnalyticsContext);
     const [loading, setLoading] = useState(false);
     return (
       <Tooltip label={disabledHardwareBlurb}>
         <Flex
-          sx={disabledWalletButtonStyle as any}
+          sx={disabledWalletButtonStyle as ThemeUICSSObject}
           // onClick={async () => {
           //   setLoading(true);
 
@@ -170,7 +167,7 @@ const AccountSelect = (): React.ReactElement => {
   const TrezorButton = () => (
     <Tooltip label={disabledHardwareBlurb}>
       <Flex
-        sx={disabledWalletButtonStyle as any}
+        sx={disabledWalletButtonStyle as ThemeUICSSObject}
         // onClick={async () => {
 
         //   try {
@@ -215,10 +212,13 @@ const AccountSelect = (): React.ReactElement => {
       });
 
       await activate(connector);
+
       if (chainId) {
         setUserData({ wallet: name });
       }
+
       setAccountName(name);
+
       setChangeWallet(false);
 
       setLoadingConnectors({

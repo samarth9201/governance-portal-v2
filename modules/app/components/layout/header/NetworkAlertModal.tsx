@@ -1,13 +1,10 @@
 import { useState } from 'react';
-import { Flex, Text, NavLink, Button } from 'theme-ui';
+import { Flex, Text, NavLink } from 'theme-ui';
 import { Icon } from '@makerdao/dai-ui-icons';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 import { useBreakpointIndex } from '@theme-ui/match-media';
 import { SupportedNetworks } from 'modules/web3/constants/networks';
 import { fadeIn, slideUp } from 'lib/keyframes';
-import { useActiveWeb3React } from 'modules/web3/hooks/useActiveWeb3React';
-import { networkNameToChainId } from 'modules/web3/helpers/chain';
-import { switchToNetwork } from 'modules/web3/helpers/switchToNetwork';
 
 export type ChainIdError = null | 'network mismatch' | 'unsupported network';
 
@@ -20,11 +17,6 @@ const NetworkAlertModal = ({
 }): JSX.Element | null => {
   const [showDialog, setShowDialog] = useState(true);
   const bpi = useBreakpointIndex();
-  const context = useActiveWeb3React();
-
-  const handleSwitchNetwork = network => {
-    switchToNetwork({ library: context.library, chainId: networkNameToChainId(network) });
-  };
 
   if (chainIdError === 'network mismatch') {
     return (
@@ -81,8 +73,6 @@ const NetworkAlertModal = ({
               Your wallet is connected to an unsupported network, please switch it to{' '}
               {SupportedNetworks.MAINNET} or {SupportedNetworks.GOERLI} to continue.
             </Text>
-            {/* <Button onClick={() => handleSwitchNetwork(SupportedNetworks.MAINNET)}>Switch to mainnet</Button>
-            <Button onClick={() => handleSwitchNetwork(SupportedNetworks.GOERLI)}>Switch to goerli</Button> */}
           </Flex>
         </DialogContent>
       </DialogOverlay>

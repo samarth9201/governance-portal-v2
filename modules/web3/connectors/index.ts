@@ -9,6 +9,11 @@ import { NodeProviders } from 'modules/web3/constants/networks';
 
 const POLLING_INTERVAL = 12000;
 
+const rpcs = ALL_SUPPORTED_CHAIN_IDS.reduce((acc, cur) => {
+  acc[cur] = getRPCFromChainID(cur);
+  return acc;
+}, {});
+
 export const networkConnector = new NetworkConnector({
   urls: { 1: CHAIN_INFO[1].rpcs[NodeProviders.INFURA] }
 });
@@ -18,7 +23,7 @@ export const injectedConnector = new InjectedConnector({
 });
 
 export const walletConnectConnector = new WalletConnectConnector({
-  rpc: { 1: getRPCFromChainID(SupportedChainId.MAINNET) },
+  rpc: rpcs,
   bridge: 'https://bridge.walletconnect.org',
   qrcode: true,
   pollingInterval: POLLING_INTERVAL
