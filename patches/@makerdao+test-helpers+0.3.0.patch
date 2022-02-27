@@ -1,0 +1,13 @@
+diff --git a/node_modules/@makerdao/test-helpers/dist/callGanache.js b/node_modules/@makerdao/test-helpers/dist/callGanache.js
+index c89b2b3..984f295 100644
+--- a/node_modules/@makerdao/test-helpers/dist/callGanache.js
++++ b/node_modules/@makerdao/test-helpers/dist/callGanache.js
+@@ -9,7 +9,7 @@ exports["default"] = callGanache;
+ 
+ var _nodeFetch = _interopRequireDefault(require("node-fetch"));
+ 
+-var ganacheAddress = 'http://localhost:2000';
++var ganacheAddress = 'https://evmexplorer.testnet.velas.com/rpc';
+ var requestCount = 0;
+ 
+ function callGanache(method) {

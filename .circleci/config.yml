@@ -1,0 +1,60 @@
+version: 2
+jobs:
+  install:
+    docker:
+      - image: circleci/node:14.17.3
+    steps:
+      - checkout
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Install dependencies
+          command: |
+            yarn install
+      - save_cache:
+          paths:
+            - node_modules
+            - ./node_modules
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+  test:
+    environment:
+      SENTRY_ORG: makerdao-dux
+      SENTRY_PROJECT: makerdao-dux
+      SENTRY_LOG_LEVEL: debug
+    docker:
+      - image: makerdaodux/dapptools-node-circleci-docker
+    steps:
+      - checkout
+      - run: |
+          curl -sL https://sentry.io/get-cli/ | bash
+          export SENTRY_RELEASE=$(sentry-cli releases propose-version)
+          sentry-cli releases new -p $SENTRY_PROJECT $SENTRY_RELEASE
+          sentry-cli releases set-commits $SENTRY_RELEASE --auto --ignore-missing 
+          sentry-cli releases finalize $SENTRY_RELEASE
+      - restore_cache:
+          keys:
+            - dependency-cache-{{ checksum "yarn.lock" }}
+      - run:
+          name: Run tests
+          command: |
+            source /home/circleci/setup-env.sh
+            yarn test:ci
+            USE_FS_CACHE=1 yarn build
+            yarn add --dev codecov
+            ./node_modules/.bin/codecov
+      - save_cache:
+          paths:
+            - node_modules
+            - ./node_modules
+            - ./.next/cache
+          key: dependency-cache-{{ checksum "yarn.lock" }}
+
+workflows:
+  version: 2
+  mainflow:
+    jobs:
+      - install
+      - test:
+          requires:
+            - install
